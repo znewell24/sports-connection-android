@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">sports-connection</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="default_info_title">Default Location</string>
+    <string name="default_info_snippet">Location Permissions Disabled</string>
+    <string name="pick_place">Choose a place</string>
+    <string name="get_place">Get Place</string>
+</resources>
