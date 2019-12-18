@@ -36,7 +36,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".activity.MapsActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MapsActivityCurrentLocation"
+            android:name=".activity.MapsActivityCurrentLocation"
             android:label="Current Location">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

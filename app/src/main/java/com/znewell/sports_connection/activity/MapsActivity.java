@@ -1,4 +1,4 @@
-package com.znewell.sports_connection;
+package com.znewell.sports_connection.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.znewell.sports_connection.R;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 

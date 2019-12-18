@@ -1,4 +1,4 @@
-package com.znewell.sports_connection;
+package com.znewell.sports_connection.activity;
 
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.znewell.sports_connection.R;
 
 /**
  * An activity that displays a map showing the place at the device's current location.
@@ -39,6 +40,7 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
         implements OnMapReadyCallback {
 
     private static final String TAG = MapsActivityCurrentLocation.class.getSimpleName();
+
     private GoogleMap mMap;
 
     private PlaceDetectionClient mPlaceDetectionClient;
