@@ -4,10 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.sql.Time;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
+@Builder
 @RequiredArgsConstructor
 public class Sport {
 

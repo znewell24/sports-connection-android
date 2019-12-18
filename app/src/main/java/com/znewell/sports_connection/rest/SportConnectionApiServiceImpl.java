@@ -7,6 +7,7 @@ import com.znewell.sports_connection.model.PlayerResponse;
 import com.znewell.sports_connection.model.Sport;
 import com.znewell.sports_connection.model.SportResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -18,16 +19,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SportConnectionApiServiceImpl {
 
     private static final String TAG = SportConnectionApiServiceImpl.class.getSimpleName();
-    public static final String BASE_URL = "https://young-dawn-39663.herokuapp.com";
+    private static final String BASE_URL = "https://young-dawn-39663.herokuapp.com";
 
     private static Retrofit retrofit = null;
-    SportConnectionApiService sportConnectionApiService;
+    private SportConnectionApiService sportConnectionApiService;
 
     private List<Sport> sports;
     private List<Player> players;
     private Sport mSport;
     private Player mPlayer;
-    private int mId;
+
+    public SportConnectionApiServiceImpl() {
+        createRetrofit();
+
+        sports = new ArrayList<>();
+        players = new ArrayList<>();
+        mSport = null;
+        mPlayer = null;
+    }
+
     /**
      * Create the Retrofit object with REST API
      */

@@ -32,25 +32,35 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.znewell.sports_connection.R;
+import com.znewell.sports_connection.model.Sport;
+import com.znewell.sports_connection.rest.SportConnectionApiServiceImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An activity that displays a map showing the place at the device's current location.
  */
 public class MapsActivityCurrentLocation extends AppCompatActivity
-        implements OnMapReadyCallback {
+        implements OnMapReadyCallback
+        , GoogleMap.OnMarkerClickListener {
 
     private static final String TAG = MapsActivityCurrentLocation.class.getSimpleName();
+    private SportConnectionApiServiceImpl apiService =
+            new SportConnectionApiServiceImpl();
 
     private GoogleMap mMap;
+    private List<MarkerOptions> markerOptions = new ArrayList<>();
+    private List<Marker> markers = new ArrayList<>();
 
     private PlaceDetectionClient mPlaceDetectionClient;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
-    // A default location (Sydney, Australia) and default zoom to use when location permission is
+    // A default location Adam-ondi-omen and default zoom to use when location permission is
     // not granted.
-    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private final LatLng mDefaultLocation = new LatLng(39.9839, 93.9762);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted;
@@ -64,7 +74,7 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
     private static final String KEY_LOCATION = "location";
 
     // Used for selecting the current place.
-    private static final int M_MAX_ENTRIES = 5;
+    private static final int M_MAX_ENTRIES = 2;
     private String[] mLikelyPlaceNames;
     private String[] mLikelyPlaceAddresses;
     private String[] mLikelyPlaceAttributions;
@@ -176,6 +186,12 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
+
+        // Set and add markers for all sports
+        addSportMarkers();
+
+        // Set a listener for marker clicks
+        mMap.setOnMarkerClickListener(this);
     }
 
     /**
@@ -386,5 +402,48 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    /**
+     * Set sports Markers
+     */
+    private void setSportsMakers() {
+
+        for (Sport x : apiService.getAllSports()) {
+
+            LatLng latLng = new LatLng(x.getLocationModel().getLat(),
+                    x.getLocationModel().getLon());
+            MarkerOptions m = new MarkerOptions()
+            .position(latLng)
+            .title(x.getName())
+            .snippet(x.getTime().toString() + " " + x.getId());
+
+            markerOptions.add(m);
+        }
+    }
+
+    /**
+     * Add markers for each sport
+     */
+    private void addSportMarkers() {
+        setSportsMakers();
+
+        if (mMap == null)
+            return;
+
+        try {
+            for (MarkerOptions m : markerOptions) {
+                mMap.addMarker(m);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        // Display Sport information
+
+        return false;
     }
 }
