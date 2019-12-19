@@ -5,4 +5,7 @@
     <string name="default_info_snippet">Location Permissions Disabled</string>
     <string name="pick_place">Choose a place</string>
     <string name="get_place">Get Place</string>
+    <string name="menu">Menu</string>
+    <string name="get_sports">Refresh Sports</string>
+    <string name="add_a_sport">Add a Sport</string>
 </resources>

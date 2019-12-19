@@ -10,10 +10,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -26,12 +32,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.znewell.sports_connection.R;
+import com.znewell.sports_connection.adapter.SportAdapter;
 import com.znewell.sports_connection.model.Sport;
 import com.znewell.sports_connection.rest.SportConnectionApiServiceImpl;
 
@@ -52,6 +60,10 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
     private GoogleMap mMap;
     private List<MarkerOptions> markerOptions = new ArrayList<>();
     private List<Marker> markers = new ArrayList<>();
+    private Marker marker;
+    private Marker marker2;
+
+    SportAdapter sportAdapter;
 
     private PlaceDetectionClient mPlaceDetectionClient;
 
@@ -64,6 +76,8 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean mLocationPermissionGranted;
+
+    private final LatLng seattle = new LatLng(47.6062, 122.3321);
 
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
@@ -178,6 +192,17 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
             }
         });
 
+        // Add a test marker or two
+        marker = mMap.addMarker(new MarkerOptions()
+        .position(mDefaultLocation)
+        .title("Millennial ChurchBall")
+        .icon(BitmapDescriptorFactory.defaultMarker()));
+
+        marker2 = mMap.addMarker(new MarkerOptions()
+        .position(seattle)
+        .title("Seattle")
+        .icon(BitmapDescriptorFactory.defaultMarker()));
+
         // Prompt the user for permission.
         getLocationPermission();
 
@@ -192,6 +217,12 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
 
         // Set a listener for marker clicks
         mMap.setOnMarkerClickListener(this);
+
+        // Populate the listView
+        populateListView();
+
+        // Add '+' button
+        addButtonToScreen();
     }
 
     /**
@@ -416,7 +447,8 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
             MarkerOptions m = new MarkerOptions()
             .position(latLng)
             .title(x.getName())
-            .snippet(x.getTime().toString() + " " + x.getId());
+            .snippet(x.getTime().toString() + " " + x.getId())
+            .icon(BitmapDescriptorFactory.defaultMarker());
 
             markerOptions.add(m);
         }
@@ -440,10 +472,66 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
         }
     }
 
+    /**
+     * Override of the onclick listener to handle marker clicks
+     * @param marker from google map
+     * @return bool
+     */
     @Override
     public boolean onMarkerClick(Marker marker) {
         // Display Sport information
-
+        populateListView();
         return false;
+    }
+
+    /**
+     * Add a '+' to the screen
+     */
+    private void addButtonToScreen() {
+        Button button = new Button(this);
+        button.setText("+");
+        addContentView(button, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                onButtonShowPopup(v);
+            }
+        });
+    }
+
+    /**
+     * populate a list view of all the sports
+     */
+    public void populateListView() {
+        sportAdapter = new SportAdapter(MapsActivityCurrentLocation.this,
+                0,
+                apiService.getAllSports());
+    }
+
+    /**
+     * create a button to activate a popup form
+     */
+    public void onButtonShowPopup(View view) {
+        LayoutInflater layoutInflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        assert layoutInflater != null;
+        View popupView = layoutInflater.inflate(R.layout.popup_sports_form, null);
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focused = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focused);
+
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
     }
 }
