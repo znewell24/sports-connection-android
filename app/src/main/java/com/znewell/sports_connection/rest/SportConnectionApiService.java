@@ -3,7 +3,8 @@ package com.znewell.sports_connection.rest;
 import com.znewell.sports_connection.model.Player;
 import com.znewell.sports_connection.model.PlayerResponse;
 import com.znewell.sports_connection.model.Sport;
-import com.znewell.sports_connection.model.SportResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,7 +16,7 @@ import retrofit2.http.Query;
 public interface SportConnectionApiService {
 
     @GET("/sports")
-    Call<SportResponse> getAllSports();
+    Call<List<Sport>> getAllSports();
 
     @GET("/sports/id")
     Call<Sport> getSportById(@Query("id")int id);

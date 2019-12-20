@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/option_get_place"
-        android:title="@string/menu"
-        app:showAsAction="always" />
+
     <item
         android:id="@+id/get_sports"
         android:title="@string/get_sports"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="collapseActionView" />
     <item
         android:id="@+id/add_sport"
         android:title="@string/add_a_sport"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="collapseActionView" />
 </menu>

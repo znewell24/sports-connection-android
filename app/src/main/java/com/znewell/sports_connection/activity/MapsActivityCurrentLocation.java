@@ -40,6 +40,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.znewell.sports_connection.R;
 import com.znewell.sports_connection.adapter.SportAdapter;
+import com.znewell.sports_connection.fragments.AddSportDialogFragment;
 import com.znewell.sports_connection.model.Sport;
 import com.znewell.sports_connection.rest.SportConnectionApiServiceImpl;
 
@@ -62,6 +63,8 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
     private List<Marker> markers = new ArrayList<>();
     private Marker marker;
     private Marker marker2;
+    private AddSportDialogFragment addSportDialogFragment =
+            new AddSportDialogFragment();
 
     SportAdapter sportAdapter;
 
@@ -152,7 +155,7 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.option_get_place) {
+        if (item.getItemId() == R.id.get_sports) {
             showCurrentPlace();
         }
         return true;
@@ -496,7 +499,8 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                onButtonShowPopup(v);
+                // onButtonShowPopup(v);
+                addSportDialogFragment.show(getFragmentManager(), "Add Sport");
             }
         });
     }
@@ -521,8 +525,7 @@ public class MapsActivityCurrentLocation extends AppCompatActivity
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focused = true;
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focused);
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
 
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 

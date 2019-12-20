@@ -8,4 +8,11 @@
     <string name="menu">Menu</string>
     <string name="get_sports">Refresh Sports</string>
     <string name="add_a_sport">Add a Sport</string>
+    <string name="ok">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="your_name">Your Name</string>
+    <string name="sport">Sport</string>
+    <string name="latitude">Latitude</string>
+    <string name="time">Time</string>
+    <string name="longitude">Longitude</string>
 </resources>

@@ -2,13 +2,15 @@ package com.znewell.sports_connection.rest;
 
 import android.util.Log;
 
+import com.znewell.sports_connection.model.LocationModel;
 import com.znewell.sports_connection.model.Player;
 import com.znewell.sports_connection.model.PlayerResponse;
 import com.znewell.sports_connection.model.Sport;
-import com.znewell.sports_connection.model.SportResponse;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,17 +58,17 @@ public class SportConnectionApiServiceImpl {
     public List<Sport> getAllSports() {
 
         createRetrofit();
-        Call<SportResponse> call =
+        Call<List<Sport>> call =
                 sportConnectionApiService.getAllSports();
 
-        call.enqueue(new Callback<SportResponse>() {
+        call.enqueue(new Callback<List<Sport>>() {
             @Override
-            public void onResponse(Call<SportResponse> call, Response<SportResponse> response) {
-                sports = response.body().getSports();
+            public void onResponse(Call<List<Sport>> call, Response<List<Sport>> response) {
+                sports = response.body();
             }
 
             @Override
-            public void onFailure(Call<SportResponse> call, Throwable t) {
+            public void onFailure(Call<List<Sport>> call, Throwable t) {
                 Log.e(TAG, t.toString());
             }
         });
@@ -143,7 +145,14 @@ public class SportConnectionApiServiceImpl {
         call.enqueue(new Callback<Sport>() {
             @Override
             public void onResponse(Call<Sport> call, Response<Sport> response) {
-                mSport = response.body();
+                if (response.body() != null)
+                    mSport = response.body();
+
+                mSport = new Sport(new Random().nextInt(),
+                        "name",
+                        "sport",
+                        new LocationModel(39, 122),
+                        new Time(120000));
             }
 
             @Override
